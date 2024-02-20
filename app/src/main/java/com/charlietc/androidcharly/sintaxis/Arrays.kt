@@ -1,6 +1,6 @@
 package com.charlietc.androidcharly.sintaxis
 
-fun main(){
+fun maing(){
     // Indice 0-6
     // Tamaño 7
 
@@ -17,3 +17,18 @@ fun main(){
         println("la posición de $value es $position")
     }
 }
+
+
+fun main(){
+    var total = 0
+    var num = ""
+    var num2 = ""
+    while (true) {
+        val userInput = readln()
+        if (userInput == "x") break
+        num += userInput.toString()
+
+    }
+    println(num)
+}
+

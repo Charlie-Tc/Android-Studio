@@ -38,6 +38,8 @@ class CalculatorActivity : AppCompatActivity() {
         val btnCalculate = findViewById<Button>(R.id.button)
         val remove = findViewById<Button>(R.id.remove)
 
+        var Resultado: Int = 0
+
 
 
 
@@ -91,10 +93,26 @@ class CalculatorActivity : AppCompatActivity() {
             ediText.append("/")
         }
 
+        fun HacerOperacion(Operator:Char ,num:Int, num2:Int){
+
+            val editarText = ediText.text.toString()
+            val intent = Intent(this,ResultCalculatorActivity::class.java)
+            intent.putExtra("EXTRA_NAME", editarText)
+
+            when(Operator){
+                '+' -> println(num + num2)
+                '-' -> println(num - num2)
+                '*' -> println(num * num2)
+                '/' -> println(num / num2)
+                else -> println("Ups, ese operador no existe")
+            }
+
+        }
+
         btnCalculate.setOnClickListener{
             val editarText = ediText.text.toString()
             if (editarText.isNotEmpty()){
-                val intent = Intent(this,CalculadoraActivity::class.java)
+                val intent = Intent(this,ResultCalculatorActivity::class.java)
                 intent.putExtra("EXTRA_NAMES", editarText)
                 startActivity(intent)
             }
