@@ -2,4 +2,8 @@
     <string name="app_name">AndroidCharly</string>
     <string name="male">Hombre</string>
     <string name="female">Mujer</string>
+    <string name="height">Altura</string>
+    <string name="weight">Peso</string>
+    <string name="age">edad</string>
+    <string name="calculate">calcular</string>
 </resources>
