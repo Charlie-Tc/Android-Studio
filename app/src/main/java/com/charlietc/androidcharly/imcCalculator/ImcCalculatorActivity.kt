@@ -1,5 +1,7 @@
 package com.charlietc.androidcharly.imcCalculator
 
+import android.annotation.SuppressLint
+import android.content.Intent
 import android.icu.text.DecimalFormat
 import android.os.Build
 import android.os.Bundle
@@ -14,6 +16,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.charlietc.androidcharly.R
+import com.charlietc.androidcharly.ResultIMCActivity
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.slider.RangeSlider
 
@@ -23,6 +26,7 @@ class ImcCalculatorActivity : AppCompatActivity() {
     private var isFemaleSelected:Boolean = false
     private var currentWeight:Int = 60
     private var currentAge:Int = 24
+    private var currentHeight:Int = 120
 
     private lateinit var viewMale:CardView
     private lateinit var viewFemale:CardView
@@ -35,6 +39,10 @@ class ImcCalculatorActivity : AppCompatActivity() {
     private lateinit var btnPlusAge:FloatingActionButton
     private lateinit var tvAge:TextView
     private lateinit var btnCalculate:Button
+
+    companion object{
+        const val IMC_KEY = "IMC_RESULT"
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -71,6 +79,7 @@ class ImcCalculatorActivity : AppCompatActivity() {
     }
 
     // Función de escuchador clicks
+    @SuppressLint("SetTextI18n")
     @RequiresApi(Build.VERSION_CODES.N)
     private fun initListeners() {
         viewMale.setOnClickListener{
@@ -83,8 +92,8 @@ class ImcCalculatorActivity : AppCompatActivity() {
 
         rsHeight.addOnChangeListener{_, value, _ ->
             val df = DecimalFormat("#.##")
-            val result = df.format(value)
-            tvHeight.text  = "$result cm"
+            currentHeight = df.format(value).toInt()
+            tvHeight.text  = "$currentHeight cm"
         }
 
         btnPlusWeight.setOnClickListener{
@@ -107,8 +116,22 @@ class ImcCalculatorActivity : AppCompatActivity() {
         }
 
         btnCalculate.setOnClickListener{
-            Log.i("CharliDevs", "${currentWeight + currentAge}")
+            val result = calculateIMC()
+            navigateToResult(result)
         }
+    }
+
+    private fun navigateToResult(result:Double) {
+        val intent = Intent(this, ResultIMCActivity::class.java)
+        intent.putExtra(IMC_KEY, result)
+        startActivity(intent)
+    }
+
+    @RequiresApi(Build.VERSION_CODES.N)
+    private fun calculateIMC(): Double {
+        val df = DecimalFormat("#.##")
+        val imc = currentWeight / (currentHeight.toDouble()/100 * currentHeight.toDouble()/100)
+        return df.format(imc).toDouble()
     }
 
     private fun setAge() {
